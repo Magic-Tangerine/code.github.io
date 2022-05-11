@@ -10,8 +10,8 @@
                   <div class="pic"><img src="../assets/img/gate.jpg" class="image"></div>
                   <div class="article">
                     <router-link type="primary" :to="'/blog/' + blog.id"><h3 style="text-align: center">{{ blog.title}}</h3></router-link>
-                    <span>{{ blog.content | snippet}}</span>
-                    <el-button type="text" class="button">查看全文</el-button>
+                    <router-link type="primary" :to="'/blog/' + blog.id"><span>{{ blog.content | snippet}}</span></router-link>
+                    <router-link type="primary" :to="'/blog/' + blog.id"><el-button type="text" class="button">查看全文</el-button></router-link>
                     <div class="bottom clearfix">
                       <time class="time">发布时间：{{blog.publishDate | snippet_date}}</time>
                     </div>

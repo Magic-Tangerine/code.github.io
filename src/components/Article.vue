@@ -50,10 +50,10 @@
                 <el-col :span="24">
                   <el-card :body-style="{ padding: '0px' }">
                     <div class="article" style="padding-left: 20px">
-                      <h2 style="float: left">{{ blog.title | snippet_title}}</h2>
+                      <router-link type="primary" :to="'/blog/' + blog.id"><h2 style="float: left">{{ blog.title | snippet_title}}</h2></router-link>
 
                       <el-button type="danger" style="float: right" @click="deleteblog(blog.id)">删除</el-button>
-                      <el-button type="primary" style="float: right">修改</el-button>
+                      <router-link type="primary" :to="'/blog/edit/' + blog.id"><el-button type="primary" style="float: right">修改</el-button></router-link>
                     </div>
                   </el-card>
                 </el-col>
@@ -88,6 +88,9 @@ export default {
       })
       location.reload()
       })
+    },
+    modifyblog(id){
+      
     }
   },
   computed:{
