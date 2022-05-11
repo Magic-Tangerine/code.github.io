@@ -16,14 +16,15 @@
         <el-radio v-model="blog.category" label="生活">生活</el-radio>
         <el-radio v-model="blog.category" label="其他">其他</el-radio>
     </el-form-item>
-    <el-form-item label="文章内容" prop="content">
-        <el-input type="textarea" v-model="blog.content" style="width: 80%"></el-input>
+    <el-form-item label="文章内容">
+        <mavon-editor ref="md" prop="content"/>
     </el-form-item>
     
     <el-form-item>
         <el-button type="primary" @click="submitForm('blog')" >提交文章</el-button>
         <el-button @click="resetForm('blog')">重置</el-button>
     </el-form-item>
+    
     </el-form>
   </el-card>
 </template>
@@ -46,7 +47,7 @@ import axios from 'axios'
         rules: {
           title: [
             { required: true, message: '请输入文章标题', trigger: 'blur' },
-            { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
+            { min: 2, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }
           ],
           author: [
               {required: true, message: '请输入文章作者', trigger: 'blur'},
@@ -63,10 +64,11 @@ import axios from 'axios'
           if (valid) {
             let nowtime = new Date();
             this.blog.publishDate = nowtime;
-            alert('submit!');
+            this.blog.content = this.$refs.md.d_value;
+            alert('提交成功！');
             this.post();
           } else {
-            console.log('error submit!!');
+            console.log('提交失败！');
             return false;
           }
         });
@@ -75,10 +77,14 @@ import axios from 'axios'
         this.$refs[formtitle].resetFields();
       },
       post:function(){
-        axios.post("http://124.223.164.9:9527/blog/",this.blog)
-        .then((data)=>{
-          console.log(data);
+        axios({
+          method: 'post',
+          url: 'http://124.223.164.9:9527/blog/',
+          data: this.blog
         })
+        .then(Response=>{
+          this.$router.push({path:'/'})
+      })
       }
     }
   }

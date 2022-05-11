@@ -4,12 +4,12 @@
         <el-aside style="width: 10%;"></el-aside>
         <el-container>
           <el-main>
-            <el-row v-for="blog in blogs" :key="blog.id">
+            <el-row v-for="blog in sortbydate1" :key="blog.id">
               <el-col :span="24">
                 <el-card :body-style="{ padding: '0px' }">
                   <div class="pic"><img src="../assets/img/gate.jpg" class="image"></div>
                   <div class="article">
-                    <h3 style="text-align: center">{{ blog.title}}</h3>
+                    <router-link type="primary" :to="'/blog/' + blog.id"><h3 style="text-align: center">{{ blog.title}}</h3></router-link>
                     <span>{{ blog.content | snippet}}</span>
                     <el-button type="text" class="button">查看全文</el-button>
                     <div class="bottom clearfix">
@@ -27,8 +27,8 @@
                 <span>公告</span>
                 <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
               </div>
-              <div v-for="o in 4" :key="o" class="text item">
-                {{'列表内容 ' + o }}
+              <div class="text item">
+                网站正在积极搭建中。。。
               </div>
             </el-card>
 
@@ -37,8 +37,8 @@
                 <span>近期文章</span>
                 <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
               </div>
-              <div v-for="o in 4" :key="o" class="text item">
-                {{'列表内容 ' + o }}
+              <div v-for='blog in sortbydate' :key="blog.id" class="text item">
+                <a href="">{{blog.title | snippet_title}}</a>
               </div>
             </el-card>
 
@@ -74,7 +74,8 @@ export default {
   name: 'v-main',
   data(){
     return{
-      blogs:[]
+      blogs:[],
+      blogs1:[]
     }
   },
   // created(){
@@ -84,13 +85,32 @@ export default {
   //     this.blogs = data.data.slice(0,5);
   //   })
   // },
+  computed:{
+    //按日期排序
+    sortbydate:function(){
+      return sortByKey(this.blogs1,'publishDate');
+    },
+    sortbydate1:function(){
+      return sortByKey(this.blogs,'publishDate');
+    },
+  },
   created(){
     axios.get('http://124.223.164.9:9527/blog/')
     .then((data)=>{
       console.log(data.data.data);
       this.blogs = data.data.data.slice(0,10);
+      this.blogs1 = data.data.data.slice(0,4);
     })
   },
+}
+
+//key值排序
+function sortByKey(array,key){
+  return array.sort(function(a,b){
+    var x=a[key];
+    var y=b[key];
+    return ((x>y)?-1:((x<y)?1:0));
+  })
 }
 </script>
 
@@ -123,5 +143,17 @@ export default {
 
   .el-card {
     height: 200px;
+  }
+
+  .article a{
+    text-decoration: none;
+  }
+
+  .article a:visited{
+    color: black;
+  }
+
+  .article a:hover{
+    color: rgb(76, 133, 197);
   }
 </style>
