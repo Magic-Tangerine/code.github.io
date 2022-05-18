@@ -35,17 +35,17 @@
                         <i class="el-icon-location"></i>
                         <span>学生</span>
                         </template>
-                        <el-submenu index="2-1">
+                        <!-- <el-submenu index="2-1">
                         <template slot="title">班干部</template>
                         <el-menu-item index="2-1-1">XXX</el-menu-item>
                         </el-submenu>
                         <el-submenu index="1-2">
                         <template slot="title">优秀学员</template>
                         <el-menu-item index="2-2-1">XXX</el-menu-item>
-                        </el-submenu>
+                        </el-submenu> -->
                         <el-submenu index="1-3">
                         <template slot="title">所有学生</template>
-                        <el-menu-item :index="2-3-index" v-for="student,index in students" :key=student.studentId>{{ student.studentName }}</el-menu-item> 
+                        <router-link v-for="student,index in students" :key=student.studentId :to="'/person/student/' + student.studentId"><el-menu-item :index="2-3-index">{{ student.studentName }}</el-menu-item></router-link> 
                         
                         </el-submenu>
                     </el-submenu>
@@ -56,7 +56,7 @@
           </div>
         <el-main style="min-width: 1000px">
             <el-card class="box-card">
-                <div>
+              <div>
                     <div id="article-container"><h1 id="舒亚非"><a href="#舒亚非" class="headerlink" title="舒亚非"></a>舒亚非</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p> <strong>个人资料</strong></p>
                     <p>舒亚非，男，硕士，系统分析师、创业导师、敏捷培训师、码农兼文艺中年。热爱互联网与开源文化，信奉在实践中学习、在创新中精进、在网络中生存。</p>
                     <p>当前研究工作主要聚焦于从互联网的上半场(信息互联网，即Web) =&amp;gt; 向下半场(价值互联网，即区块链)的升级和迁移。</p>
@@ -107,8 +107,13 @@
 
 <script>
 import axios from 'axios'
+import SingleStudent from './SingleStudent.vue'
+
 export default {
   name: 'person',
+  components: {
+    SingleStudent
+  },
   data(){
     return{
       students:[]

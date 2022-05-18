@@ -1,7 +1,6 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-import VueResource from 'vue-resource'
 import App from './App'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -15,8 +14,6 @@ import { marked } from 'marked'
 Vue.use(ElementUI)
 
 Vue.config.productionTip = false
-
-Vue.use(VueResource)
 
 Vue.use(VueRouter)
 
@@ -51,3 +48,17 @@ new Vue({
   template: '<App/>',
   router: router
 })
+
+
+//全局函数
+Vue.prototype.getyear = function(publishDate){
+  var date = new Date(publishDate);
+  let year = date.getFullYear();
+  return year;
+}
+
+Vue.prototype.getmonth = function(publishDate){
+  var date = new Date(publishDate);
+  let month = date.getMonth();
+  return month;
+}

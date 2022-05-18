@@ -7,7 +7,7 @@
             <el-row v-for="blog in sortbydate1" :key="blog.id">
               <el-col :span="24">
                 <el-card :body-style="{ padding: '0px' }">
-                  <div class="pic"><img src="../assets/img/gate.jpg" class="image"></div>
+                  <div class="pic"><img :src="blog.backgroundUrl" class="image"></div>
                   <div class="article">
                     <router-link type="primary" :to="'/blog/' + blog.id"><h3 style="text-align: center">{{ blog.title}}</h3></router-link>
                     <router-link type="primary" :to="'/blog/' + blog.id"><span>{{ blog.content | snippet}}</span></router-link>
@@ -25,7 +25,7 @@
             <el-card class="box-card" style="margin-top: 20px;">
               <div slot="header" class="clearfix">
                 <span>公告</span>
-                <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                
               </div>
               <div class="text item">
                 网站正在积极搭建中。。。
@@ -35,7 +35,7 @@
             <el-card class="box-card" style="margin-top: 20px;">
               <div slot="header" class="clearfix">
                 <span>近期文章</span>
-                <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                <el-button style="float: right; padding: 3px 0" type="text"><router-link to="/article">更多文章>></router-link></el-button>
               </div>
               <div v-for='blog in sortbydate' :key="blog.id" class="text item">
                 <a href="">{{blog.title | snippet_title}}</a>
@@ -155,5 +155,13 @@ function sortByKey(array,key){
 
   .article a:hover{
     color: rgb(76, 133, 197);
+  }
+
+  .clearfix a:visited{
+    color: rgb(151,177,255);
+    
+  }
+  .clearfix a{
+    text-decoration: none;
   }
 </style>

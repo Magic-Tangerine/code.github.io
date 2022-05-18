@@ -7,6 +7,9 @@
     <el-form-item label="文章作者" prop="author">
         <el-input v-model="blog.author" style="width: 200px"></el-input>
     </el-form-item>
+    <el-form-item label="博客封面" prop="cover">
+        <el-input v-model="blog.backgroundUrl" style="width: 300px"></el-input>
+    </el-form-item>
     <el-form-item label="推送到主页" prop="delivery">
         <el-switch v-model="blog.delivery"></el-switch>
     </el-form-item>
@@ -45,6 +48,7 @@ import axios from 'axios'
           category: '',
           content: '',
           publishDate:'',
+          backgroundUrl:'',
         },
         rules: {
           title: [
@@ -95,7 +99,6 @@ import axios from 'axios'
                 }
             })
             this.post();
-        location.reload();
         })
       },
     },

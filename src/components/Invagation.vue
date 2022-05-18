@@ -6,10 +6,9 @@
       </el-header>
       <el-header style="padding: 0px; min-width: 1000px;">
         <el-menu
-          :default-active="1"
+          :default-active="1+''"
           class="el-menu-demo"
           mode="horizontal"
-          @select="handleSelect"
           background-color="#545c64"
           text-color="#fff"
           active-text-color="#ffd04b">
@@ -17,11 +16,14 @@
           <el-input placeholder="请输入内容" style="width: 200px" id="search">
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
-          <router-link to="/article"><el-menu-item index="6" style="float:right">文章归档</el-menu-item></router-link>
-          <router-link to="/add"><el-menu-item index="5" style="float:right">发布文章</el-menu-item></router-link>
-          <router-link to="/person"><el-menu-item index="4" style="float:right">人员资料</el-menu-item></router-link>
+          <router-link to="/article"><el-menu-item index="5" style="float:right">文章归档</el-menu-item></router-link>
+          <router-link to="/person/student/20141332"><el-submenu index="4" style="float:right">
+            <template slot="title">人员资料</template>
+            <el-menu-item index="4-1">导师</el-menu-item>
+            <el-menu-item index="4-2">学生</el-menu-item>
+            </el-submenu></router-link>
           <el-menu-item index="3" disabled style="float:right">专业动态</el-menu-item>
-          <el-menu-item index="2" style="float:right">专业介绍</el-menu-item>
+          <router-link to="/majorintro"><el-menu-item index="2" style="float:right">专业介绍</el-menu-item></router-link>
           <router-link to="/"><el-menu-item index="1" style="float:right">主页</el-menu-item></router-link>
         </el-menu>
       </el-header>
@@ -31,7 +33,11 @@
 <script>
 
 export default {
-  name: 'invagation'
+  name: 'invagation',
+  data(){
+    
+  }
+
 }
 </script>
 
