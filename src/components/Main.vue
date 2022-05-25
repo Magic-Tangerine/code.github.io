@@ -7,7 +7,7 @@
             <el-row v-for="blog in sortbydate1" :key="blog.id">
               <el-col :span="24">
                 <el-card :body-style="{ padding: '0px' }">
-                  <div class="pic"><img :src="blog.backgroundUrl" class="image"></div>
+                  <div class="pic"><router-link type="primary" :to="'/blog/' + blog.id"><img :src="blog.backgroundUrl" class="image"></router-link></div>
                   <div class="article">
                     <router-link type="primary" :to="'/blog/' + blog.id"><h3 style="text-align: center">{{ blog.title}}</h3></router-link>
                     <router-link type="primary" :to="'/blog/' + blog.id"><span>{{ blog.content | snippet}}</span></router-link>
@@ -45,10 +45,10 @@
             <el-card class="box-card" style="margin-top: 20px;">
               <div slot="header" class="clearfix">
                 <span>文章分类</span>
-                <el-button style="float: right; padding: 3px 0" type="text">操作按钮</el-button>
+                <el-button style="float: right; padding: 3px 0" type="text"><router-link to="/article">更多文章>></router-link></el-button>
               </div>
-              <div v-for="o in 4" :key="o" class="text item">
-                {{'列表内容 ' + o }}
+              <div v-for="category,index in categories" :key="index" class="text item">
+                {{category}}
               </div>
             </el-card>
 
@@ -70,12 +70,14 @@
 
 <script>
 import axios from 'axios'
+import { marked } from 'marked'
 export default {
   name: 'v-main',
   data(){
     return{
       blogs:[],
-      blogs1:[]
+      blogs1:[],
+      categories:[],
     }
   },
   // created(){
@@ -97,9 +99,21 @@ export default {
   created(){
     axios.get('http://124.223.164.9:9527/blog/')
     .then((data)=>{
-      console.log(data.data.data);
-      this.blogs = data.data.data.slice(0,10);
-      this.blogs1 = data.data.data.slice(0,4);
+
+      data.data.data.forEach(item=>{
+        item.content=this.gettext(marked(item.content));
+        if(item.pushToPage == "1"){
+          this.blogs.push(item);
+          this.categories.push(item.category);
+        }
+      })
+      this.blogs = sortByKey(this.blogs,'publishDate');
+      this.blogs = this.blogs.slice(0,6);
+      this.blogs1 = data.data.data;
+      this.blogs1 = sortByKey(this.blogs1,'publishDate');
+      this.blogs1 = this.blogs1.slice(0,4);
+
+      this.categories = this.unique(this.categories);
     })
   },
 }
@@ -122,6 +136,11 @@ function sortByKey(array,key){
         display: inline-block;
         border: none;
         border-radius: 10px;
+        
+  }
+
+  .image:hover{
+    size: 110%;
   }
 
   .el-row {
@@ -132,6 +151,17 @@ function sortByKey(array,key){
     float: left;
     height: 100%;
     width: 50%;
+    
+  }
+
+  .pic img{
+    padding-right: 10px;
+    cursor: pointer;
+    transition: all 0.5s;
+  }
+
+  .pic img:hover{
+    transform: scale(1.05);
   }
 
   .article {
@@ -154,11 +184,11 @@ function sortByKey(array,key){
   }
 
   .article a:hover{
-    color: rgb(76, 133, 197);
+    color: #409EFF;
   }
 
   .clearfix a:visited{
-    color: rgb(151,177,255);
+    color: #409EFF;
     
   }
   .clearfix a{

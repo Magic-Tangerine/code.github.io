@@ -4,7 +4,7 @@
     <el-container>
           <el-aside style="width: 10%"></el-aside>
           <div class="aside">
-        <el-aside>
+        <el-aside class="fliter">
           <div class="fliter-ele">年份</div>
           <br><br>
           <div>
@@ -31,10 +31,21 @@
               <el-radio-button v-for="category,index in categories" :key="index" :label="category"></el-radio-button>
             </el-radio-group>
           </div>
+          <div>
+              <el-row>
+                <el-col :span="24">
+                  <el-card :body-style="{ padding: '0px' }">
+                    <div style="padding-left: 20px">
+                      <router-link to="/article/add"><el-button style="float: right" type="primary">添加文章</el-button></router-link>
+                    </div>
+                  </el-card>
+                </el-col>
+              </el-row>
+          </div>
         </el-aside>
           </div>
         <el-main style="min-width: 500px">
-
+              <el-row><h1>共有{{blogquantity}}篇文章：</h1></el-row>
               <el-row v-for="blog in sortbydate" :key="blog.id" style="padding-bottom: 20px">
                 <el-col :span="24">
                   <el-card :body-style="{ padding: '0px' }">
@@ -48,15 +59,17 @@
                   </el-card>
                 </el-col>
               </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <el-card :body-style="{ padding: '0px' }">
-                    <div style="padding-left: 20px">
-                      <router-link to="/article/add"><el-button style="float: right" type="primary">添加文章</el-button></router-link>
-                    </div>
-                  </el-card>
-                </el-col>
-              </el-row>
+              
+              <div class="block" style="float: right">
+                <el-pagination
+                  layout="prev, pager, next"
+                  :total="blogquantity"
+                  :page-size="pagesize"
+                  :current-page.sync="page"
+                  
+                  >
+                </el-pagination>
+              </div>
            
         </el-main>
         <el-aside style="width: 20%"></el-aside>
@@ -70,6 +83,9 @@ export default {
   name: 'article',
   data () {
     return {
+      blogquantity:0,
+      pagesize:6,
+      page:1,
       blogs:[],
       fliterblogs:[],
       years:[],
@@ -94,7 +110,7 @@ export default {
       })
     },
     fliterblog(){
-      
+      this.blogquantity = 0;
       this.fliterblogs = [];
       this.blogs.forEach(item=>{
         var flag = 1;
@@ -110,8 +126,11 @@ export default {
         if(flag == 1){
           
           this.fliterblogs.push(item);
+          this.blogquantity = this.blogquantity + 1;
+          
         }
       })
+      this.fliterblogs=this.fliterblogs.slice(this.pagesize*(this.page-1),this.pagesize*this.page);
     }
   },
 
@@ -125,6 +144,9 @@ export default {
     categorysel: function(){
       this.fliterblog()
     },
+    page: function(){
+      this.fliterblog()
+    }
   },
   computed:{
     //按日期排序
@@ -136,27 +158,24 @@ export default {
   created(){
     axios.get('http://124.223.164.9:9527/blog/')
     .then((data)=>{
+      this.blogquantity = 0;
       data.data.data.forEach(item=>{
+        
         item.year = this.getyear(item.publishDate);
         item.month = this.getmonth(item.publishDate) + 1;
         this.years.push(item.year);
         this.categories.push(item.category);
+        this.blogquantity = this.blogquantity + 1;
       })
       this.blogs = data.data.data;
-      this.fliterblogs = data.data.data;
-      this.years = unique(this.years);
-      this.categories = unique(this.categories);
+      this.years = this.unique(this.years);
+      this.categories = this.unique(this.categories);
+      this.fliterblog();
     })
   },
 };
 
-//去除重复项
-function unique(arr) { 
- let res = new Map();
- return arr.filter((item) => {
-   return !res.has(item) && res.set(item, 1);
- });
-}
+
 
 //key值排序
 function sortByKey(array,key){
@@ -179,23 +198,11 @@ function sortByKey(array,key){
 .el-button{
   margin: 20px 10px;
 }
-.fliter{
-  float: left;
-  margin: 0;
-  padding: 0;
-}
-.fliter button{
-  margin: 0;
-  padding: 0;
-  font-size: 15px;
+
+.el-radio-button{
+  padding: 10px;
 }
 
-.fliter li{
-  list-style: none;
-  float: left;
-  margin-left: 20px;
-  
-}
 
 .fliter-ele{
   float: left;

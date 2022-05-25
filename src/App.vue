@@ -25,4 +25,15 @@ export default {
 #app{
   overflow-x: hidden;
 }
+
+a{
+  text-decoration: none;
+}
+a:visited{
+  color: black;
+}
+
+a:hover{
+  color: #409EFF;
+}
 </style>

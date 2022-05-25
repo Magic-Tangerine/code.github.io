@@ -38,6 +38,7 @@ import { marked } from 'marked'
             this.blog = data.data.data;
             this.code = marked(this.blog.content);
             console.log(this.code);
+            console.log(this.blog.pushToPage);
             })
         }
     }

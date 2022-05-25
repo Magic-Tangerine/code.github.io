@@ -11,7 +11,7 @@
         <el-input v-model="blog.backgroundUrl" style="width: 300px"></el-input>
     </el-form-item>
     <el-form-item label="推送到主页" prop="delivery">
-        <el-switch v-model="blog.delivery"></el-switch>
+        <el-switch v-model="delivery"></el-switch>
     </el-form-item>
     <el-form-item label="文章类型" prop="type">
         <el-radio v-model="blog.category" label="学习">学习</el-radio>
@@ -39,7 +39,7 @@ import axios from 'axios'
     data() {
       return {
         id: this.$route.params.id,
-        
+        delivery:'',
         blog: {
           id: '',
           title: '',
@@ -78,29 +78,27 @@ import axios from 'axios'
       resetForm(formtitle) {
         this.$refs[formtitle].resetFields();
       },
-      post:function(){
-        axios({
-          method: 'post',
-          url: 'http://124.223.164.9:9527/blog/',
-          data: this.blog
-        })
-        .then(Response=>{
-          this.$router.push({path:'/'})
-      })
-      },
       editblog(id){
         var conf = this.$confirm('是否确认修改？','提示',{confirmButtonText: '确认',cancelButtonText: '取消', type: 'warning'})
         .then(()=>{
             axios({
-                method: 'delete',
-                url: 'http://124.223.164.9:9527/blog/id',
-                data: {
-                id: id
-                }
+                method: 'put',
+                url: 'http://124.223.164.9:9527/blog/',
+                data: this.blog
             })
-            this.post();
         })
       },
+    },
+    watch:{
+      delivery: function(){
+        if(this.delivery == true){
+          this.blog.pushToPage = "1";
+        }
+        else{
+          this.blog.pushToPage = "0";
+        }
+        console.log(this.blog.pushToPage);
+      }
     },
     created(){
         axios({

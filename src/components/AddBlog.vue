@@ -11,7 +11,7 @@
         <el-input v-model="blog.backgroundUrl" style="width: 300px"></el-input>
     </el-form-item>
     <el-form-item label="推送到主页" prop="delivery">
-        <el-switch v-model="blog.delivery"></el-switch>
+        <el-switch v-model="delivery"></el-switch>
     </el-form-item>
     <el-form-item label="文章类型" prop="type">
         <el-radio v-model="blog.category" label="学习">学习</el-radio>
@@ -38,11 +38,12 @@ import axios from 'axios'
       
     data() {
       return {
+        delivery:'',
         blog: {
           id: '',
           title: '',
           author: '',
-          pushToPage: "1",
+          pushToPage: '',
           category: '',
           content: '',
           publishDate:'',
@@ -89,6 +90,17 @@ import axios from 'axios'
         .then(Response=>{
           this.$router.push({path:'/'})
       })
+      }
+    },
+    watch:{
+      delivery: function(){
+        if(this.delivery == true){
+          this.blog.pushToPage = "1";
+        }
+        else{
+          this.blog.pushToPage = "0";
+        }
+        console.log(this.blog.pushToPage);
       }
     }
   }

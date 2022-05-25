@@ -1,10 +1,9 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
-<<<<<<< HEAD
-=======
+
 // import VueResource from 'vue-resource'
->>>>>>> 8b66ac4f5a2b7eb4dc57e13f4fa5672fbc88fd7e
+
 import App from './App'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
@@ -19,16 +18,11 @@ Vue.use(ElementUI)
 
 Vue.config.productionTip = false
 
-<<<<<<< HEAD
-=======
-// Vue.use(VueResource)
-
->>>>>>> 8b66ac4f5a2b7eb4dc57e13f4fa5672fbc88fd7e
 Vue.use(VueRouter)
 
 Vue.use(maconEditor)
 
-//Vue.use({ marked })
+Vue.use({ marked })
 
 Vue.filter("snippet",function(value){
   return value.slice(0,30) + "......";
@@ -60,14 +54,28 @@ new Vue({
 
 
 //全局函数
+//获取年份
 Vue.prototype.getyear = function(publishDate){
   var date = new Date(publishDate);
   let year = date.getFullYear();
   return year;
 }
-
+//获取月份
 Vue.prototype.getmonth = function(publishDate){
   var date = new Date(publishDate);
   let month = date.getMonth();
   return month;
 }
+
+//去除重复项
+Vue.prototype.unique = function(arr){ 
+  let res = new Map();
+  return arr.filter((item) => {
+    return !res.has(item) && res.set(item, 1);
+  });
+ }
+
+//正则提取得到html代码中的文本
+ Vue.prototype.gettext=function(code){
+  return code.replace(/<[^<>]+>/g,"");
+ }
